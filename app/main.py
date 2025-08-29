@@ -1,4 +1,5 @@
 import sys
+import sqlite3
 
 from dataclasses import dataclass
 
@@ -16,5 +17,10 @@ if command == ".dbinfo":
         database_file.seek(16)  # Skip the first 16 bytes of the header
         page_size = int.from_bytes(database_file.read(2), byteorder="big")
         print(f"database page size: {page_size}")
+
+        # Calulate the total number of tables in the database
+        database_file.seek(28)  # Move to the offset where the number of tables is stored
+        num_tables = int.from_bytes(database_file.read(4), byteorder="big")
+        print(f"number of tables: {num_tables}")
 else:
     print(f"Invalid command: {command}")
