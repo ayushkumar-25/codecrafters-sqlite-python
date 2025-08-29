@@ -19,8 +19,10 @@ if command == ".dbinfo":
         print(f"database page size: {page_size}")
 
         # Calulate the total number of tables in the database
-        database_file.seek(28)  # Move to the offset where the number of tables is stored
-        num_tables = int.from_bytes(database_file.read(4), byteorder="big")
-        print(f"number of tables: {num_tables}")
+        conn = sqlite3.connect(database_file_path)
+        cursor = conn.cursor()
+        cursor.execute("SELECT count(*) FROM sqlite_schema WHERE type='table' AND name NOT LIKE 'sqlite_%';")
+        table_count = cursor.fetchone()[0]
+        print(f"number of tables: {table_count}")
 else:
     print(f"Invalid command: {command}")
