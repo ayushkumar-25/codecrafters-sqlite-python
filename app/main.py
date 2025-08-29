@@ -20,7 +20,7 @@ if command == ".dbinfo":
 
         # Calulate the total number of tables in the database
         database_file.seek(28)  # Move to the offset where the number of tables is stored
-        num_tables = int.from_bytes(database_file.read(4), byteorder="big")
+        num_tables = int.from_bytes(database_file.read(3), byteorder="big")
         print(f"number of tables: {num_tables}")
 else:
     print(f"Invalid command: {command}")
